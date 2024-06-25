@@ -1,23 +1,5 @@
 package com.openclassrooms.starterjwt.services;
 
-import com.openclassrooms.starterjwt.exception.BadRequestException;
-import com.openclassrooms.starterjwt.exception.NotFoundException;
-import com.openclassrooms.starterjwt.models.Session;
-import com.openclassrooms.starterjwt.models.Teacher;
-import com.openclassrooms.starterjwt.models.User;
-import com.openclassrooms.starterjwt.repository.SessionRepository;
-import com.openclassrooms.starterjwt.repository.UserRepository;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,9 +8,31 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import org.mockito.Mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.openclassrooms.starterjwt.exception.BadRequestException;
+import com.openclassrooms.starterjwt.exception.NotFoundException;
+import com.openclassrooms.starterjwt.models.Session;
+import com.openclassrooms.starterjwt.models.Teacher;
+import com.openclassrooms.starterjwt.models.User;
+import com.openclassrooms.starterjwt.repository.SessionRepository;
+import com.openclassrooms.starterjwt.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class SessionServiceTest {
@@ -190,11 +194,41 @@ public class SessionServiceTest {
     public void testParticipateInSession_SessionNotFound() {
         // Arrange
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.empty());
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
         // Act & Assert
         assertThrows(NotFoundException.class, () -> sessionService.participate(session.getId(), user.getId()));
 
         verify(sessionRepository, times(1)).findById(session.getId());
+        verify(userRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    public void testParticipateInSession_UserNotFound() {
+        // Arrange
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(NotFoundException.class, () -> sessionService.participate(session.getId(), user.getId()));
+
+        verify(sessionRepository, times(1)).findById(session.getId());
+        verify(userRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    public void testParticipateInSession_UserAlreadyParticipate() {
+        // Arrange
+        session.getUsers().add(user);
+
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+
+        // Act & Assert
+        assertThrows(BadRequestException.class, () -> sessionService.participate(session.getId(), user.getId()));
+
+        verify(sessionRepository, times(1)).findById(session.getId());
+        verify(userRepository, times(1)).findById(1L);
     }
 
     @Test

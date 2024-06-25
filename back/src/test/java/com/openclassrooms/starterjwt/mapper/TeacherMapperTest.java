@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -102,5 +104,49 @@ public class TeacherMapperTest {
         assertThat(entities).isNotNull();
         assertThat(entities.size()).isEqualTo(1);
         assertThat(entities.get(0)).isEqualTo(teacherMapper.toEntity(teacherDto));
+    }
+
+    @Test
+    public void testToEntity_EmptyList() {
+        // Act
+        List<Teacher> result = teacherMapper.toEntity(Collections.emptyList());
+
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    ;
+
+    @Test
+    public void testToDto_EmptyList() {
+        // Act
+        List<TeacherDto> result = teacherMapper.toDto(Collections.emptyList());
+
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testToEntity_nullList() {
+        // Act
+        List<TeacherDto> list = null;
+        List<Teacher> result = teacherMapper.toEntity(list);
+
+        // Assert
+        assertNull(result);
+    }
+
+    ;
+
+    @Test
+    public void testToDto_nullList() {
+        // Act
+        List<Teacher> list = null;
+        List<TeacherDto> result = teacherMapper.toDto(list);
+
+        // Assert
+        assertNull(result);
     }
 }

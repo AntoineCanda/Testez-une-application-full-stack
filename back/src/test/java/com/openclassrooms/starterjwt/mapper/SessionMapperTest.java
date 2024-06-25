@@ -4,6 +4,7 @@ import com.openclassrooms.starterjwt.dto.SessionDto;
 import com.openclassrooms.starterjwt.models.Session;
 import com.openclassrooms.starterjwt.models.Teacher;
 import com.openclassrooms.starterjwt.models.User;
+import com.openclassrooms.starterjwt.security.jwt.AuthTokenFilter;
 import com.openclassrooms.starterjwt.services.TeacherService;
 import com.openclassrooms.starterjwt.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,11 +16,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -260,6 +266,54 @@ public class SessionMapperTest {
         assertNotNull(result);
         assertTrue(result.isEmpty());
     }
-;
+
+    @Test
+    public void testSessionTeacherId_sucess() throws IllegalArgumentException, NoSuchMethodException, SecurityException {
+        try {
+            assertThat(this.getSessionTeacherIdMethod().invoke(this.sessionMapper, session)).isEqualTo(1L);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSessionTeacherId_teacherNull() throws IllegalArgumentException, NoSuchMethodException, SecurityException {
+        session.setTeacher(null);
+
+        try {
+            assertThat(this.getSessionTeacherIdMethod().invoke(this.sessionMapper, session)).isNull();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSessionTeacherId_teacherNullId() throws IllegalArgumentException, NoSuchMethodException, SecurityException {
+        teacher.setId(null);
+        session.setTeacher(teacher);
+
+        try {
+            assertThat(this.getSessionTeacherIdMethod().invoke(this.sessionMapper, session)).isNull();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSessionTeacherId_sessionNull() throws IllegalArgumentException, NoSuchMethodException, SecurityException {
+        session = null;
+
+        try {
+            assertThat(this.getSessionTeacherIdMethod().invoke(this.sessionMapper, session)).isNull();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Method getSessionTeacherIdMethod() throws NoSuchMethodException, SecurityException {
+        Method method = SessionMapperImpl.class.getDeclaredMethod("sessionTeacherId", Session.class);
+        method.setAccessible(true);
+        return method;
+    }
 
 }
