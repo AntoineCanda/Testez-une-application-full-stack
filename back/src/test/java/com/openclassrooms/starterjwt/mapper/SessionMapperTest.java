@@ -1,21 +1,5 @@
 package com.openclassrooms.starterjwt.mapper;
 
-import com.openclassrooms.starterjwt.dto.SessionDto;
-import com.openclassrooms.starterjwt.models.Session;
-import com.openclassrooms.starterjwt.models.Teacher;
-import com.openclassrooms.starterjwt.models.User;
-import com.openclassrooms.starterjwt.security.jwt.AuthTokenFilter;
-import com.openclassrooms.starterjwt.services.TeacherService;
-import com.openclassrooms.starterjwt.services.UserService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
@@ -24,14 +8,27 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import com.openclassrooms.starterjwt.dto.SessionDto;
+import com.openclassrooms.starterjwt.models.Session;
+import com.openclassrooms.starterjwt.models.Teacher;
+import com.openclassrooms.starterjwt.models.User;
+import com.openclassrooms.starterjwt.services.TeacherService;
+import com.openclassrooms.starterjwt.services.UserService;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -88,10 +85,9 @@ public class SessionMapperTest {
         when(userService.findById(1L)).thenReturn(user);
     }
 
-    ;
-
-   @Test
-    public void testToEntity() {
+    @Test
+    @DisplayName("Dto to Entity → Success")
+    public void testToEntity_success() {
         // Act
         Session sessionMapped = sessionMapper.toEntity(sessionDto);
 
@@ -101,7 +97,8 @@ public class SessionMapperTest {
     }
 
     @Test
-    public void testToEntity_NullTeacherId() {
+    @DisplayName("Dto to Entity with null teacher id → Success with null teacher")
+    public void testToEntity_NullTeacherId_nullTeacherId() {
         // Arrange
         sessionDto.setTeacher_id(null);
 
@@ -113,10 +110,9 @@ public class SessionMapperTest {
         assertNull(result.getTeacher());
     }
 
-    ;
-
     @Test
-    public void testToEntity_NullUserList() {
+    @DisplayName("Dto to Entity with null user list → Success with empty user list")
+    public void testToEntity_NullUserList_emptyList() {
         // Arrange
         sessionDto.setUsers(null);
 
@@ -129,7 +125,8 @@ public class SessionMapperTest {
     }
 
     @Test
-    public void testNullEntity_toDto() {
+    @DisplayName("Entity to Dto with null session → null")
+    public void testNullEntity_toDto_null() {
         // Arrange
         // Act
         SessionDto result = sessionMapper.toDto((Session) null);
@@ -139,7 +136,8 @@ public class SessionMapperTest {
     }
 
     @Test
-    public void testNullListEntity_toDto() {
+    @DisplayName("Entity list to Dto with null list → null")
+    public void testNullListEntity_toDto_null() {
         // Arrange
         // Act
         List<SessionDto> result = sessionMapper.toDto((List<Session>) null);
@@ -149,7 +147,8 @@ public class SessionMapperTest {
     }
 
     @Test
-    public void testToDto() {
+    @DisplayName("Entity to Dto → success")
+    public void testToDto_success() {
         // Act
         SessionDto result = sessionMapper.toDto(session);
 
@@ -162,7 +161,8 @@ public class SessionMapperTest {
     }
 
     @Test
-    public void testNullListDto_toEntity() {
+    @DisplayName("Null list of dto to entity → null")
+    public void testNullListDto_toEntity_null() {
         // Arrange
         // Act
         List<Session> result = sessionMapper.toEntity((List<SessionDto>) null);
@@ -172,7 +172,8 @@ public class SessionMapperTest {
     }
 
     @Test
-    public void testNullDto_toEntity() {
+    @DisplayName("Null dto to entity → null")
+    public void testNullDto_toEntity_null() {
         // Arrange
         // Act
         Session result = sessionMapper.toEntity((SessionDto) null);
@@ -182,8 +183,8 @@ public class SessionMapperTest {
     }
 
     @Test
-    @DisplayName("toDto should handle null Teacher correctly")
-    public void testToDto_NullTeacher() {
+    @DisplayName("To dto with null teacher -> null teacher")
+    public void testToDto_NullTeacher_nullTeacher() {
         // Arrange
         session.setTeacher(null);
 
@@ -195,11 +196,9 @@ public class SessionMapperTest {
         assertNull(result.getTeacher_id());
     }
 
-    ;
-
     @Test
-    @DisplayName("toDto should handle null User list correctly")
-    public void testToDto_NullUserList() {
+    @DisplayName("To dto with null list of users -> empty list of user")
+    public void testToDto_NullUserList_emptyList() {
         // Arrange
         session.setUsers(null);
 
@@ -211,10 +210,9 @@ public class SessionMapperTest {
         assertTrue(result.getUsers().isEmpty());
     }
 
-    ;
-
     @Test
-    public void testToEntityList() {
+    @DisplayName("List of dto to entity -> success")
+    public void testToEntityList_success() {
         // Arrange
         List<SessionDto> sessionDtos = Collections.singletonList(sessionDto);
 
@@ -227,10 +225,9 @@ public class SessionMapperTest {
         assertEquals(sessionDto.getDescription(), result.get(0).getDescription());
     }
 
-    ;
-
     @Test
-    public void testToDtoList() {
+    @DisplayName("To dto with list of sessions -> success")
+    public void testToDtoList_success() {
         // Arrange
         List<Session> sessions = Collections.singletonList(session);
 
@@ -243,10 +240,9 @@ public class SessionMapperTest {
         assertEquals(session.getDescription(), result.get(0).getDescription());
     }
 
-    ;
-
     @Test
-    public void testToEntity_EmptyList() {
+    @DisplayName("To entity with empty list of sessions -> Empty list")
+    public void testToEntity_EmptyList_emptyList() {
         // Act
         List<Session> result = sessionMapper.toEntity(Collections.emptyList());
 
@@ -255,10 +251,9 @@ public class SessionMapperTest {
         assertTrue(result.isEmpty());
     }
 
-    ;
-
     @Test
-    public void testToDto_EmptyList() {
+    @DisplayName("To dto with empty list of sessions -> empty list")
+    public void testToDto_EmptyList_emptyList() {
         // Act
         List<SessionDto> result = sessionMapper.toDto(Collections.emptyList());
 
@@ -268,6 +263,7 @@ public class SessionMapperTest {
     }
 
     @Test
+    @DisplayName("test private method of class sessionTeacherId -> success")
     public void testSessionTeacherId_sucess() throws IllegalArgumentException, NoSuchMethodException, SecurityException {
         try {
             assertThat(this.getSessionTeacherIdMethod().invoke(this.sessionMapper, session)).isEqualTo(1L);
@@ -277,6 +273,7 @@ public class SessionMapperTest {
     }
 
     @Test
+    @DisplayName("test private method of class sessionTeacherId -> null teacher")
     public void testSessionTeacherId_teacherNull() throws IllegalArgumentException, NoSuchMethodException, SecurityException {
         session.setTeacher(null);
 
@@ -288,6 +285,7 @@ public class SessionMapperTest {
     }
 
     @Test
+    @DisplayName("test private method of class sessionTeacherId -> null teacher id")
     public void testSessionTeacherId_teacherNullId() throws IllegalArgumentException, NoSuchMethodException, SecurityException {
         teacher.setId(null);
         session.setTeacher(teacher);
@@ -300,6 +298,7 @@ public class SessionMapperTest {
     }
 
     @Test
+    @DisplayName("test private method of class sessionTeacherId -> null session")
     public void testSessionTeacherId_sessionNull() throws IllegalArgumentException, NoSuchMethodException, SecurityException {
         session = null;
 
@@ -315,5 +314,4 @@ public class SessionMapperTest {
         method.setAccessible(true);
         return method;
     }
-
 }

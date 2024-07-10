@@ -1,20 +1,18 @@
 package com.openclassrooms.starterjwt.security.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,9 +33,8 @@ public class UserDetailsServiceImplTest {
         userDetailsService = new UserDetailsServiceImpl(userRepository);
     }
 
-    ;
-
     @Test
+    @DisplayName("load user by username -> success")
     public void testLoadUserByUsername_Success() {
         // Arrange
         User mockUser = new User();
@@ -60,9 +57,8 @@ public class UserDetailsServiceImplTest {
         verify(userRepository, times(1)).findByEmail("john.doe@example.fr");
     }
 
-    ;
-
     @Test
+    @DisplayName("load user by username -> UsernameNotFoundException")
     public void testLoadUserByUsername_FailureUsernameNotFound() {
         // Arrange
         String username = "john.doe@example.fr";
@@ -75,5 +71,4 @@ public class UserDetailsServiceImplTest {
 
         verify(userRepository, times(1)).findByEmail(username);
     }
-;
 }

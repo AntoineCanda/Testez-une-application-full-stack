@@ -3,18 +3,20 @@ package com.openclassrooms.starterjwt.services;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.repository.UserRepository;
 
+@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
     @Mock
@@ -23,13 +25,9 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
-    public void testDelete() {
+    @DisplayName("delete user -> success")
+    public void testDelete_success() {
         // Arrange
         Long id = 1L;
 
@@ -41,7 +39,8 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testFindById() {
+    @DisplayName("find user by id -> success")
+    public void testFindById_success() {
         // Arrange
         Long id = 1L;
         User user = new User();
@@ -55,7 +54,8 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testFindByIdNotFound() {
+    @DisplayName("find user by id -> not found")
+    public void testFindById_NotFound() {
         // Arrange
         Long id = 1L;
         when(userRepository.findById(id)).thenReturn(Optional.empty());

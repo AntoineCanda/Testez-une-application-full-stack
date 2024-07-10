@@ -2,6 +2,7 @@ package com.openclassrooms.starterjwt.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.anyLong;
 import org.mockito.InjectMocks;
@@ -41,7 +42,8 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testFindById() {
+    @DisplayName("Find User by ID → Returns the User")
+    public void testFindById_Success() {
         // Arrange
         Long id = 1L;
         User user = new User();
@@ -57,7 +59,8 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testFindByIdNotFound() {
+    @DisplayName("Find User by ID → User not found")
+    public void testFindById_NotFound() {
         // Arrange
         Long id = 1L;
         when(userService.findById(id)).thenReturn(null);
@@ -70,7 +73,8 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testFindByIdNumberFormatException() {
+    @DisplayName("Find User by ID with bad type Id → Bad request")
+    public void testFindById_WithNumberFormatException_BadRequest() {
         // Act
         ResponseEntity<?> response = userController.findById("invalid_id");
 
@@ -79,7 +83,8 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testDelete() {
+    @DisplayName("Delete User by ID → Success")
+    public void testDelete_Success() {
         // Arrange
         Long id = 1L;
         User user = new User();
@@ -103,7 +108,8 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testDeleteNotFound() {
+    @DisplayName("Delete User by ID → User not found")
+    public void testDelete_UserNotFound() {
         // Arrange
         Long id = 1L;
         when(userService.findById(id)).thenReturn(null);
@@ -116,7 +122,8 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testDeleteUnauthorized() {
+    @DisplayName("Delete User by ID → Unauthorized")
+    public void testDelete_Unauthorized() {
         // Arrange
         Long id = 1L;
         User user = new User();
@@ -139,7 +146,8 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testDeleteNumberFormatException() {
+    @DisplayName("Delete User by ID With invalid format number → Bad Request")
+    public void testDelete_NumberFormatException() {
         // Act
         ResponseEntity<?> response = userController.save("invalid_id");
 

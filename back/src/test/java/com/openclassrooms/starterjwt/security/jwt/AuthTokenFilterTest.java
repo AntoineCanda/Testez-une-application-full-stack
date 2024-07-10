@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
@@ -48,7 +49,8 @@ public class AuthTokenFilterTest {
     private AuthTokenFilter authTokenFilter;
 
     @Test
-    public void testDoFilterInternalWithValidToken() throws ServletException, IOException {
+    @DisplayName("doFilterInternal with valid token -> success")
+    public void testDoFilterInternal_WithValidToken_success() throws ServletException, IOException {
         // given
         when(request.getHeader("Authorization")).thenReturn("Bearer validToken");
         when(jwtUtils.validateJwtToken("validToken")).thenReturn(true);
@@ -65,7 +67,8 @@ public class AuthTokenFilterTest {
     }
 
     @Test
-    public void testDoFilterInternalWithException() throws ServletException, IOException {
+    @DisplayName("doFilterInternal with runtime exception -> exception")
+    public void testDoFilterInternal_WithException_filter() throws ServletException, IOException {
         // given
         when(request.getHeader("Authorization")).thenReturn("Bearer validToken");
         when(jwtUtils.validateJwtToken("validToken")).thenThrow(new RuntimeException("Simulated exception"));
@@ -78,7 +81,8 @@ public class AuthTokenFilterTest {
     }
 
     @Test
-    public void testDoFilterInternalWithInvalidToken() throws ServletException, IOException {
+    @DisplayName("doFilterInternal with invalid token -> filter")
+    public void testDoFilterInternal_WithInvalidToken_filter() throws ServletException, IOException {
         // given
         when(request.getHeader("Authorization")).thenReturn("Bearer invalidToken");
         when(jwtUtils.validateJwtToken("invalidToken")).thenReturn(false);
@@ -91,7 +95,8 @@ public class AuthTokenFilterTest {
     }
 
     @Test
-    public void testDoFilterInternalWithTokenWithoutBearerPrefix() throws ServletException, IOException {
+    @DisplayName("doFilterInternal with invalid token (without prefix bearer) -> filter")
+    public void testDoFilterInternal_WithTokenWithoutBearerPrefix_filter() throws ServletException, IOException {
         // given
         when(request.getHeader("Authorization")).thenReturn("invalidToken");
 
@@ -104,6 +109,7 @@ public class AuthTokenFilterTest {
     }
 
     @Test
+    @DisplayName("testParseJwt with valid token -> success")
     public void testParseJwt_success() throws IllegalArgumentException, NoSuchMethodException, SecurityException {
         String bearerToken = "Bearer token";
         String token = "token";
@@ -119,7 +125,8 @@ public class AuthTokenFilterTest {
     }
 
     @Test
-    public void testParseJwt_noBearerPrefix() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    @DisplayName("testParseJwt with invalid token (no prefix bearer) -> null")
+    public void testParseJwt_noBearerPrefix_null() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         String token = "token";
         when(request.getHeader("Authorization")).thenReturn(token);
 
@@ -133,7 +140,8 @@ public class AuthTokenFilterTest {
     }
 
     @Test
-    public void testParseJwt_noBearerToken() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    @DisplayName("testParseJwt with no token (no prefix bearer) -> null")
+    public void testParseJwt_noBearerToken_null() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         String token = null;
         when(request.getHeader("Authorization")).thenReturn(token);
 

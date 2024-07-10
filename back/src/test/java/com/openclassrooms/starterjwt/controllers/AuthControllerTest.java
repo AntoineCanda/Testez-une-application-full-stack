@@ -1,26 +1,26 @@
 package com.openclassrooms.starterjwt.controllers;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-
-import java.util.Optional;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,7 +75,8 @@ public class AuthControllerTest {
     }
 
     @Test
-    public void testAuthenticateUser_success() {
+    @DisplayName("Authenticate user → Success")
+    public void testAuthenticateUser_Success() {
         // Arrange
         User user = new User("john.doe@example.com", "Doe", "John", "password", true);
         user.setId(1L);
@@ -106,6 +107,7 @@ public class AuthControllerTest {
     }
 
     @Test
+    @DisplayName("Authenticate user with invalid credentials → Bad credentials")
     public void testAuthenticateUser_withInvalidCredentials_badCredentials() {
         // Arrange
         when(authenticationManager.authenticate(any())).thenThrow(new BadCredentialsException("Invalid credentials"));
@@ -120,6 +122,7 @@ public class AuthControllerTest {
     }
 
     @Test
+    @DisplayName("Register new user → Success")
     public void testRegisterNewUser_Success() {
         // Arrange
         when(userRepository.existsByEmail(anyString())).thenReturn(false);
@@ -142,6 +145,7 @@ public class AuthControllerTest {
     }
 
     @Test
+    @DisplayName("Register new user with already used email → Bad Request")
     public void testRegisterWithEmailAlreadyUse_BadRequest() {
         // Arrange
         when(userRepository.existsByEmail(anyString())).thenReturn(true);

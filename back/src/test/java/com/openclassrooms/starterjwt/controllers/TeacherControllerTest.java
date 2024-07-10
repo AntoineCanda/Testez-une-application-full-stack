@@ -6,6 +6,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
@@ -58,6 +59,7 @@ public class TeacherControllerTest {
     }
 
     @Test
+    @DisplayName("Find teacher by ID → Success")
     public void testFindById_Success() {
         when(teacherService.findById(1L)).thenReturn(teacher);
         when(teacherMapper.toDto(teacher)).thenReturn(teacherDto);
@@ -72,6 +74,7 @@ public class TeacherControllerTest {
     }
 
     @Test
+    @DisplayName("Find teacher by ID → User not found")
     public void testFindById_NotFound() {
         when(teacherService.findById(1L)).thenReturn(null);
 
@@ -84,6 +87,7 @@ public class TeacherControllerTest {
     }
 
     @Test
+    @DisplayName("Find teacher by ID with invalid id→ Bad Request")
     public void testFindById_BadRequest() {
         ResponseEntity<?> response = teacherController.findById("invalid");
 
@@ -94,6 +98,7 @@ public class TeacherControllerTest {
     }
 
     @Test
+    @DisplayName("Find all teacher → Success")
     public void testFindAll_Success() {
         List<Teacher> teachers = Collections.singletonList(teacher);
         List<TeacherDto> teacherDtos = Collections.singletonList(teacherDto);

@@ -57,11 +57,9 @@ public class SessionControllerIntegrationTest {
         jwt = jwtUtils.generateJwtToken(authentication);
     }
 
-    ;
-
     @Test
     @DisplayName("Find Session by ID → Returns Session")
-    public void testFindSessionById() throws Exception {
+    public void testFindSessionById_Success() throws Exception {
         Session session = Session.builder()
                 .name("Session")
                 .date(new Date())
@@ -78,33 +76,27 @@ public class SessionControllerIntegrationTest {
                 .andExpect(jsonPath("$.description").value("Session description"));
     }
 
-    ;
-
     @Test
     @DisplayName("Find Session by ID → Returns Null for Non-Existing ID")
-    public void testFindSessionById_NonExistingId() throws Exception {
+    public void testFindSessionById_Null_WhenNonExistingId() throws Exception {
         mockMvc.perform(get("/api/session/{id}", 999L)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
-    ;
-
     @Test
     @DisplayName("Find All Sessions → Returns All Sessions")
-    public void testFindAllSession() throws Exception {
+    public void testFindAllSession_Success() throws Exception {
         mockMvc.perform(get("/api/session")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
     }
 
-    ;
-
     @Test
     @DisplayName("Create Session → Saves and Returns Session")
-    public void testCreateSession() throws Exception {
+    public void testCreateSession_Success() throws Exception {
         SessionDto sessionDto = new SessionDto();
         sessionDto.setName("New Session");
         sessionDto.setDate(new Date());
@@ -120,11 +112,9 @@ public class SessionControllerIntegrationTest {
                 .andExpect(jsonPath("$.description").value("New Description"));
     }
 
-    ;
-
     @Test
     @DisplayName("Update Session → Returns Updated Session")
-    public void testUpdateSession() throws Exception {
+    public void testUpdateSession_Success() throws Exception {
         Session session = Session.builder()
                 .name("Session")
                 .date(new Date())
@@ -148,11 +138,9 @@ public class SessionControllerIntegrationTest {
                 .andExpect(jsonPath("$.description").value("Updated Description"));
     }
 
-    ;
-
     @Test
     @DisplayName("Delete Session by ID")
-    public void testDeleteSession() throws Exception {
+    public void testDeleteSession_Success() throws Exception {
         Session session = Session.builder()
                 .name("Session")
                 .date(new Date())
@@ -170,11 +158,9 @@ public class SessionControllerIntegrationTest {
                 .andExpect(status().isNotFound());
     }
 
-    ;
-
     @Test
     @DisplayName("Participate in Session → Successful Participation")
-    public void testParticipateSession() throws Exception {
+    public void testParticipateSession_Success() throws Exception {
         Session session = Session.builder()
                 .name("Session")
                 .date(new Date())
@@ -187,8 +173,6 @@ public class SessionControllerIntegrationTest {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt))
                 .andExpect(status().isOk());
     }
-
-    ;
 
     @Test
     @DisplayName("Participate in Session → User Not Found")
@@ -206,8 +190,6 @@ public class SessionControllerIntegrationTest {
                 .andExpect(status().isNotFound());
     }
 
-    ;
-
     @Test
     @DisplayName("Participate in Session → Session Not Found")
     public void testParticipateSession_SessionNotFound() throws Exception {
@@ -216,11 +198,9 @@ public class SessionControllerIntegrationTest {
                 .andExpect(status().isNotFound());
     }
 
-    ;
-
     @Test
     @DisplayName("No Longer Participate in Session → Successful")
-    public void testNoLongerParticipateSession() throws Exception {
+    public void testNoLongerParticipateSession_Success() throws Exception {
         User user = User.builder()
                 .id(1L)
                 .email("john.doe@example.fr")
@@ -243,8 +223,6 @@ public class SessionControllerIntegrationTest {
                 .andExpect(status().isOk());
     }
 
-    ;
-
     @Test
     @DisplayName("No Longer Participate in Session → Session Not Found")
     public void testNoLongerParticipateSession_SessionNotFound() throws Exception {
@@ -252,5 +230,4 @@ public class SessionControllerIntegrationTest {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt))
                 .andExpect(status().isNotFound());
     }
-;
 }

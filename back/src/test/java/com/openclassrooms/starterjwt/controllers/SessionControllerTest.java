@@ -1,29 +1,32 @@
 package com.openclassrooms.starterjwt.controllers;
 
-import com.openclassrooms.starterjwt.dto.SessionDto;
-import com.openclassrooms.starterjwt.mapper.SessionMapper;
-import com.openclassrooms.starterjwt.models.Session;
-import com.openclassrooms.starterjwt.models.Teacher;
-import com.openclassrooms.starterjwt.services.SessionService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import com.openclassrooms.starterjwt.dto.SessionDto;
+import com.openclassrooms.starterjwt.mapper.SessionMapper;
+import com.openclassrooms.starterjwt.models.Session;
+import com.openclassrooms.starterjwt.models.Teacher;
+import com.openclassrooms.starterjwt.services.SessionService;
 
 @ExtendWith(MockitoExtension.class)
 public class SessionControllerTest {
@@ -66,6 +69,7 @@ public class SessionControllerTest {
     }
 
     @Test
+    @DisplayName("Find session by id → Success")
     void testFindById() {
         // Arrange
         when(sessionService.getById(1L)).thenReturn(session);
@@ -82,6 +86,7 @@ public class SessionControllerTest {
     }
 
     @Test
+    @DisplayName("Find session by id → Session not found")
     void testFindById_NotFound() {
         // Arrange
         when(sessionService.getById(1L)).thenReturn(null);
@@ -94,9 +99,8 @@ public class SessionControllerTest {
         verify(sessionService, times(1)).getById(1L);
     }
 
-    ;
-
     @Test
+    @DisplayName("Find session by id with invalid id → Bad Request")
     void testFindById_BadRequest() {
         // Act
         ResponseEntity<?> response = sessionController.findById("invalid");
@@ -106,9 +110,8 @@ public class SessionControllerTest {
         verify(sessionService, times(0)).getById(anyLong());
     }
 
-    ;
-
     @Test
+    @DisplayName("Find all session → Success")
     void testFindAll_Success() {
         // Arrange
         when(sessionService.findAll()).thenReturn(Collections.singletonList(session));
@@ -125,6 +128,7 @@ public class SessionControllerTest {
     }
 
     @Test
+    @DisplayName("Create session → Success")
     void testCreate_Success() {
         // Arrange
         when(sessionService.create(any(Session.class))).thenReturn(session);
@@ -143,6 +147,7 @@ public class SessionControllerTest {
     }
 
     @Test
+    @DisplayName("Update session → Success")
     void testUpdate_Success() {
         // Arrange
         when(sessionService.update(anyLong(), any(Session.class))).thenReturn(session);
@@ -161,6 +166,7 @@ public class SessionControllerTest {
     }
 
     @Test
+    @DisplayName("Update session with invalid id → Bad Request")
     void testUpdate_BadRequest() {
         // Act
         ResponseEntity<?> response = sessionController.update("invalid", sessionDto);
@@ -170,9 +176,8 @@ public class SessionControllerTest {
         verify(sessionService, never()).update(anyLong(), any(Session.class));
     }
 
-    ;
-
     @Test
+    @DisplayName("Save session → Success")
     void testSave_Success() {
         // Arrange
         when(sessionService.getById(1L)).thenReturn(session);
@@ -187,6 +192,7 @@ public class SessionControllerTest {
     }
 
     @Test
+    @DisplayName("Save session with invalid id → Bad Request")
     void testSave_BadRequest() {
 
         // Act
@@ -199,6 +205,7 @@ public class SessionControllerTest {
     }
 
     @Test
+    @DisplayName("Save session → Session not found")
     void testSave_NotFound() {
         // Arrange
         when(sessionService.getById(session.getId())).thenReturn(null);
@@ -211,6 +218,7 @@ public class SessionControllerTest {
     }
 
     @Test
+    @DisplayName("Participate in session → Success")
     void testParticipate_Success() {
         // Act
         ResponseEntity<?> response = sessionController.participate("1", "1");
@@ -221,6 +229,7 @@ public class SessionControllerTest {
     }
 
     @Test
+    @DisplayName("No longer participate in session → Success")
     void testNoLongerParticipate() {
         // Act
         ResponseEntity<?> response = sessionController.noLongerParticipate("1", "1");
@@ -231,6 +240,7 @@ public class SessionControllerTest {
     }
 
     @Test
+    @DisplayName("No longer participate in session with invalid id → Bad Request")
     void testNoLongerParticipate_BadRequest() {
         // Act
         ResponseEntity<?> response = sessionController.noLongerParticipate("invalid", "1");
@@ -239,5 +249,4 @@ public class SessionControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         verify(sessionService, never()).noLongerParticipate(anyLong(), anyLong());
     }
-;
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -49,6 +50,7 @@ class JwtUtilsTest {
     }
 
     @Test
+    @DisplayName("generateJwtToken with valid auth -> success")
     void testGenerateJwtToken_validAuth_success() {
 
         String token = jwtUtils.generateJwtToken(authentication);
@@ -59,6 +61,7 @@ class JwtUtilsTest {
     }
 
     @Test
+    @DisplayName("getUserNameFromJwtToken with valid token -> success")
     void testGetUserNameFromJwtToken_success() {
 
         String token = jwtUtils.generateJwtToken(authentication);
@@ -69,6 +72,7 @@ class JwtUtilsTest {
     }
 
     @Test
+    @DisplayName("validateJwtToken with valid token -> success")
     void testValidateJwtToken_success() {
 
         String token = jwtUtils.generateJwtToken(authentication);
@@ -79,7 +83,8 @@ class JwtUtilsTest {
     }
 
     @Test
-    void testValidateJwtToken_invalidToken() {
+    @DisplayName("validateJwtToken with invalid token -> success")
+    void testValidateJwtToken_invalidToken_false() {
         String token = "invalidToken";
 
         boolean isValid = jwtUtils.validateJwtToken(token);
@@ -88,6 +93,7 @@ class JwtUtilsTest {
     }
 
     @Test
+    @DisplayName("validateJwtToken with invalidSignature -> false")
     void testValidateJwtToken_InvalidSignature() {
         String token = Jwts.builder()
                 .setSubject("JohnDoe")
@@ -102,7 +108,8 @@ class JwtUtilsTest {
     }
 
     @Test
-    void testValidateJwtToken_Expired() throws InterruptedException {
+    @DisplayName("validateJwtToken with expired token -> false")
+    void testValidateJwtToken_Expired_false() throws InterruptedException {
         ReflectionTestUtils.setField(jwtUtils, "jwtExpirationMs", 1);
         String token = jwtUtils.generateJwtToken(authentication);
 
@@ -114,7 +121,8 @@ class JwtUtilsTest {
     }
 
     @Test
-    void validateJwtToken_UnsignedToken() {
+    @DisplayName("validateJwtToken with unsigned token -> false")
+    void validateJwtToken_UnsignedToken_false() {
         String unsupportedToken = Jwts.builder()
                 .setSubject("JohnDoe")
                 .setIssuedAt(new Date())
