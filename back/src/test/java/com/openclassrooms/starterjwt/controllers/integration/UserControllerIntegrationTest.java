@@ -41,7 +41,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     @DisplayName("Find User by ID → Returns the User")
-    public void testFindUserById_UserExists() throws Exception {
+    public void testFindUserById_Success() throws Exception {
         mockMvc.perform(get("/api/user/1")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
                 .contentType(APPLICATION_JSON))

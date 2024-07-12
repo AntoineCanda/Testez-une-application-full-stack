@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class NotFoundExceptionTest {
 
     @Test
-    @DisplayName("NotFoundException should have HttpStatus.NOT_FOUND")
-    public void testNotFoundExceptionHttpStatus() {
+    @DisplayName("NotFoundException has good status")
+    public void testNotFoundException_HttpStatus() {
         // Act
         NotFoundException exception = new NotFoundException();
 
@@ -20,16 +20,13 @@ public class NotFoundExceptionTest {
         assertEquals(HttpStatus.NOT_FOUND, responseStatus.value());
     }
 
-    ;
-
     @Test
     @DisplayName("NotFoundException should be thrown")
-    public void testNotFoundExceptionThrown() {
+    public void testNotFoundException_ExceptionThrown() {
         // Act & Assert
         Throwable thrown = assertThrows(NotFoundException.class, () -> {
             throw new NotFoundException();
         });
         assertEquals(thrown.getClass(), NotFoundException.class);
     }
-;
 }

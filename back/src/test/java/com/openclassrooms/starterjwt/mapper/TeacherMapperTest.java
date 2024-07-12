@@ -8,8 +8,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
@@ -45,7 +45,8 @@ public class TeacherMapperTest {
     }
 
     @Test
-    public void testToDto() {
+    @DisplayName("entity to dto -> success")
+    public void testToDto_sucess() {
         TeacherDto dto = teacherMapper.toDto(teacher);
 
         assertThat(dto).isNotNull();
@@ -57,7 +58,8 @@ public class TeacherMapperTest {
     }
 
     @Test
-    public void testToEntity() {
+    @DisplayName("entity to dto -> success")
+    public void testToEntity_success() {
         Teacher entity = teacherMapper.toEntity(teacherDto);
 
         assertThat(entity).isNotNull();
@@ -69,7 +71,8 @@ public class TeacherMapperTest {
     }
 
     @Test
-    void testToDto_WithNullEntity() {
+    @DisplayName("null entity to dto -> null")
+    void testToDto_WithNullEntity_null() {
         // Act
         TeacherDto result = teacherMapper.toDto((Teacher) null);
 
@@ -78,7 +81,8 @@ public class TeacherMapperTest {
     }
 
     @Test
-    void testToEntity_WithNullDto() {
+    @DisplayName("null dto to entity -> null")
+    void testToEntity_WithNullDto_null() {
         // Act
         Teacher result = teacherMapper.toEntity((TeacherDto) null);
 
@@ -87,7 +91,8 @@ public class TeacherMapperTest {
     }
 
     @Test
-    public void testToDtoList() {
+    @DisplayName("List of entity to dto -> success")
+    public void testToDtoList_success() {
         List<Teacher> teachers = Collections.singletonList(teacher);
         List<TeacherDto> dtos = teacherMapper.toDto(teachers);
 
@@ -97,7 +102,8 @@ public class TeacherMapperTest {
     }
 
     @Test
-    public void testToEntityList() {
+    @DisplayName("List of dto to entity -> success")
+    public void testToEntityList_success() {
         List<TeacherDto> dtos = Collections.singletonList(teacherDto);
         List<Teacher> entities = teacherMapper.toEntity(dtos);
 
@@ -107,7 +113,8 @@ public class TeacherMapperTest {
     }
 
     @Test
-    public void testToEntity_EmptyList() {
+    @DisplayName("Empty list of entity to dto-> empty list")
+    public void testToEntity_EmptyList_emptyList() {
         // Act
         List<Teacher> result = teacherMapper.toEntity(Collections.emptyList());
 
@@ -116,10 +123,9 @@ public class TeacherMapperTest {
         assertTrue(result.isEmpty());
     }
 
-    ;
-
     @Test
-    public void testToDto_EmptyList() {
+    @DisplayName("Empty list of dto to entity -> empty list")
+    public void testToDto_EmptyList_emptyList() {
         // Act
         List<TeacherDto> result = teacherMapper.toDto(Collections.emptyList());
 
@@ -129,7 +135,8 @@ public class TeacherMapperTest {
     }
 
     @Test
-    public void testToEntity_nullList() {
+    @DisplayName("Null list of dto to entity -> null")
+    public void testToEntity_nullList_null() {
         // Act
         List<TeacherDto> list = null;
         List<Teacher> result = teacherMapper.toEntity(list);
@@ -138,10 +145,9 @@ public class TeacherMapperTest {
         assertNull(result);
     }
 
-    ;
-
     @Test
-    public void testToDto_nullList() {
+    @DisplayName("Null list of entity to dto -> null")
+    public void testToDto_nullList_null() {
         // Act
         List<Teacher> list = null;
         List<TeacherDto> result = teacherMapper.toDto(list);

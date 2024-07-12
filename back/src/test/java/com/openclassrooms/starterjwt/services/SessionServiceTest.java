@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
@@ -87,7 +88,8 @@ public class SessionServiceTest {
     }
 
     @Test
-    public void testCreateSession() {
+    @DisplayName("create session -> success")
+    public void testCreateSession_success() {
         // Arrange
         when(sessionRepository.save(any(Session.class))).thenReturn(session);
 
@@ -100,7 +102,8 @@ public class SessionServiceTest {
     }
 
     @Test
-    public void testDeleteSession() {
+    @DisplayName("delete session -> success")
+    public void testDeleteSession_success() {
         // Act
         sessionService.delete(session.getId());
 
@@ -109,7 +112,8 @@ public class SessionServiceTest {
     }
 
     @Test
-    public void testFindAllSessions() {
+    @DisplayName("find all sessions -> success")
+    public void testFindAllSessions_success() {
         // Arrange
         when(sessionRepository.findAll()).thenReturn(List.of(session));
 
@@ -124,7 +128,8 @@ public class SessionServiceTest {
     }
 
     @Test
-    public void testFindAllSessions_NoSessions() {
+    @DisplayName("find all sessions -> empty list")
+    public void testFindAllSessions_emptyList() {
         // Arrange
         when(sessionRepository.findAll()).thenReturn(Collections.emptyList());
 
@@ -136,10 +141,9 @@ public class SessionServiceTest {
         assertTrue(sessions.isEmpty());
     }
 
-    ;
-
     @Test
-    public void testFindByIdSessionFound() {
+    @DisplayName("find by id -> success")
+    public void testFindById_success() {
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
 
         Session foundSession = sessionService.getById(1L);
@@ -151,7 +155,8 @@ public class SessionServiceTest {
     }
 
     @Test
-    public void testFindByIdSessionNotFound() {
+    @DisplayName("find by id -> null")
+    public void testFindById_null() {
 
         when(sessionRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -163,7 +168,8 @@ public class SessionServiceTest {
     }
 
     @Test
-    public void testUpdateSession() {
+    @DisplayName("update -> success")
+    public void testUpdateSession_success() {
         // Arrange
         when(sessionRepository.save(any(Session.class))).thenReturn(session);
 
@@ -177,6 +183,7 @@ public class SessionServiceTest {
     }
 
     @Test
+    @DisplayName("participate in session -> success")
     public void testParticipateInSession_Success() {
         // Arrange
         when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
@@ -191,7 +198,8 @@ public class SessionServiceTest {
     }
 
     @Test
-    public void testParticipateInSession_SessionNotFound() {
+    @DisplayName("participate in session -> session not found")
+    public void testParticipateInSession_sessionNotFound() {
         // Arrange
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.empty());
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
@@ -204,6 +212,7 @@ public class SessionServiceTest {
     }
 
     @Test
+    @DisplayName("participate in session -> user not found")
     public void testParticipateInSession_UserNotFound() {
         // Arrange
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
@@ -217,7 +226,8 @@ public class SessionServiceTest {
     }
 
     @Test
-    public void testParticipateInSession_UserAlreadyParticipate() {
+    @DisplayName("participate in session with user already in the session -> bad request")
+    public void testParticipateInSession_UserAlreadyParticipate_badRequest() {
         // Arrange
         session.getUsers().add(user);
 
@@ -232,6 +242,7 @@ public class SessionServiceTest {
     }
 
     @Test
+    @DisplayName("no longer participate in session -> success")
     public void testNoLongerParticipate_Success() {
         // Arrange
         session.getUsers().add(user);
@@ -247,10 +258,9 @@ public class SessionServiceTest {
         assertFalse(session.getUsers().contains(user));
     }
 
-    ;
-
     @Test
-    public void testNoLongerParticipateInSessionNotFound() {
+    @DisplayName("no longer participate in session -> session not found")
+    public void testNoLongerParticipateInSession_sessionNotFound() {
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> sessionService.noLongerParticipate(session.getId(), user.getId()));
@@ -259,7 +269,8 @@ public class SessionServiceTest {
     }
 
     @Test
-    public void testNoLongerParticipateInSessionNotParticipating() {
+    @DisplayName("no longer participate in session with user not in -> bad request")
+    public void testNoLongerParticipateInSession_WithUserNotParticipating_badRequest() {
         // Arrange
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
         user.setId(5L);

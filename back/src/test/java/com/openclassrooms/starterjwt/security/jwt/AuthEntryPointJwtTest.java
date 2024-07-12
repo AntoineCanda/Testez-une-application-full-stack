@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -42,7 +43,8 @@ public class AuthEntryPointJwtTest {
     }
 
     @Test
-    void testCommence() throws IOException, ServletException {
+    @DisplayName("commence -> success")
+    void testCommence_success() throws IOException, ServletException {
         when(authException.getMessage()).thenReturn("Unauthorized");
 
         try {

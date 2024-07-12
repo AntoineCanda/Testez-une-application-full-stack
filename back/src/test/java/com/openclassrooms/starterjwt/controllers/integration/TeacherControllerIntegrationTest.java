@@ -1,6 +1,5 @@
 package com.openclassrooms.starterjwt.controllers.integration;
 
-import com.openclassrooms.starterjwt.security.jwt.JwtUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,15 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.openclassrooms.starterjwt.security.jwt.JwtUtils;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -44,7 +44,7 @@ public class TeacherControllerIntegrationTest {
 
     @Test
     @DisplayName("Find All Teachers → Returns All Teachers")
-    public void testFindAllTeachers() throws Exception {
+    public void testFindAllTeachers_Success() throws Exception {
         mockMvc.perform(get("/api/teacher")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
                 .contentType(APPLICATION_JSON))
@@ -53,7 +53,7 @@ public class TeacherControllerIntegrationTest {
 
     @Test
     @DisplayName("Find Teacher by ID → Returns the Teacher")
-    public void testFindTeacherById_ExistingId() throws Exception {
+    public void testFindTeacherById_Success() throws Exception {
         mockMvc.perform(get("/api/teacher/1")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
                 .contentType(APPLICATION_JSON))

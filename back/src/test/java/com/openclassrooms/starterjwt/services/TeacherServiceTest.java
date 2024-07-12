@@ -1,21 +1,24 @@
 package com.openclassrooms.starterjwt.services;
 
-import com.openclassrooms.starterjwt.models.Teacher;
-import com.openclassrooms.starterjwt.repository.TeacherRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.openclassrooms.starterjwt.models.Teacher;
+import com.openclassrooms.starterjwt.repository.TeacherRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class TeacherServiceTest {
@@ -40,7 +43,8 @@ public class TeacherServiceTest {
     }
 
     @Test
-    public void testFindAll() {
+    @DisplayName("find all -> success")
+    public void testFindAll_success() {
         List<Teacher> teachers = Collections.singletonList(teacher);
         when(teacherRepository.findAll()).thenReturn(teachers);
 
@@ -54,6 +58,7 @@ public class TeacherServiceTest {
     }
 
     @Test
+    @DisplayName("find by id -> success")
     public void testFindById_Success() {
         when(teacherRepository.findById(1L)).thenReturn(Optional.of(teacher));
 
@@ -66,6 +71,7 @@ public class TeacherServiceTest {
     }
 
     @Test
+    @DisplayName("find by id -> not found")
     public void testFindById_NotFound() {
         when(teacherRepository.findById(1L)).thenReturn(Optional.empty());
 

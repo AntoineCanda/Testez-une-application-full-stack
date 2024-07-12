@@ -7,7 +7,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,8 +56,8 @@ public class UserMapperTest {
     ;
 
     @Test
-    @DisplayName("toEntity should map UserDto to User correctly")
-    public void testToEntity() {
+    @DisplayName("dto to entity -> success")
+    public void testToEntity_success() {
         // Act
         User entity = userMapper.toEntity(userDto);
 
@@ -77,8 +76,8 @@ public class UserMapperTest {
     ;
 
     @Test
-    @DisplayName("toDto should map User to UserDto correctly")
-    public void testToDto() {
+    @DisplayName("entity to Dto -> success")
+    public void testToDto_success() {
         // Act
         UserDto dto = userMapper.toDto(user);
 
@@ -97,8 +96,8 @@ public class UserMapperTest {
     ;
 
     @Test
-    @DisplayName("toEntityList should map list of UserDto to list of User correctly")
-    public void testToEntityList() {
+    @DisplayName("dto list to entity -> success")
+    public void testToEntityList_success() {
         // Arrange
         List<UserDto> userDtoList = Collections.singletonList(userDto);
 
@@ -121,8 +120,8 @@ public class UserMapperTest {
     ;
 
     @Test
-    @DisplayName("toDtoList should map list of User to list of UserDto correctly")
-    public void testToDtoList() {
+    @DisplayName("entity list to dto -> success")
+    public void testToDtoList_success() {
         // Arrange
         List<User> usersList = Collections.singletonList(user);
 
@@ -140,7 +139,8 @@ public class UserMapperTest {
     }
 
     @Test
-    void testToDtoList_WithNullEntityList() {
+    @DisplayName("null entity list to dto -> null")
+    void testToDtoList_WithNullEntityList_null() {
         // act
         List<UserDto> dtoList = userMapper.toDto((List<User>) null);
 
@@ -149,7 +149,8 @@ public class UserMapperTest {
     }
 
     @Test
-    void testToEntity_WithNullDtoList() {
+    @DisplayName("null dto list to entity -> null")
+    void testToEntity_WithNullDtoList_null() {
         // act
         List<User> entityList = userMapper.toEntity((List<UserDto>) null);
 
@@ -158,7 +159,8 @@ public class UserMapperTest {
     }
 
     @Test
-    void testToEntity_WithNullDto() {
+    @DisplayName("null dto to entity -> null")
+    void testToEntity_WithNullDto_null() {
 
         // act
         User result = userMapper.toEntity((UserDto) null);
@@ -168,7 +170,8 @@ public class UserMapperTest {
     }
 
     @Test
-    void testToDto_WithNullEntity() {
+    @DisplayName("null dto to entity-> null")
+    void testToDto_WithNullEntity_null() {
         // act
         UserDto result = userMapper.toDto((User) null);
 

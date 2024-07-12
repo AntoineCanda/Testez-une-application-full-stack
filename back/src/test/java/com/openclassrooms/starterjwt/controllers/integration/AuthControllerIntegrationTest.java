@@ -49,11 +49,9 @@ public class AuthControllerIntegrationTest {
         objectMapper = new ObjectMapper();
     }
 
-    ;
-
     @Test
     @DisplayName("Register User -> Success")
-    public void registerUserSuccessfully() throws Exception {
+    public void testRegisterUser_Success() throws Exception {
         SignupRequest signupRequest = new SignupRequest();
         signupRequest.setEmail("john.doe@example.fr");
         signupRequest.setFirstName("John");
@@ -71,8 +69,8 @@ public class AuthControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("Register User -> Email Already Taken")
-    public void returnBadRequestWhenEmailAlreadyTaken() throws Exception {
+    @DisplayName("Register User when Email Already Taken -> Success")
+    public void testRegisterUser_BadRequest_WhenEmailAlreadyTaken() throws Exception {
         SignupRequest signupRequest = new SignupRequest();
         signupRequest.setEmail("yoga@studio.com");
         signupRequest.setFirstName("Yoga");
@@ -88,7 +86,7 @@ public class AuthControllerIntegrationTest {
 
     @Test
     @DisplayName("Authenticate User Admin -> Success")
-    public void authenticateUserAdminSuccessfully() throws Exception {
+    public void testAuthenticateUserAdmin_Success() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail("yoga@studio.com");
         loginRequest.setPassword("test!1234");
@@ -102,11 +100,9 @@ public class AuthControllerIntegrationTest {
                 .andExpect(jsonPath("$.admin").value(true));
     }
 
-    ;
-
     @Test
-    @DisplayName("Authenticate User -> Non Admin")
-    public void shouldAuthenticateNonAdminUserSuccessfully() throws Exception {
+    @DisplayName("Authenticate User not Admin -> Success")
+    public void testAuthenticateNonAdminUser_Success() throws Exception {
         SignupRequest signupRequest = new SignupRequest();
         signupRequest.setEmail("john.doe@example.fr");
         signupRequest.setPassword("password");
@@ -133,5 +129,4 @@ public class AuthControllerIntegrationTest {
         user = userRepository.findByEmail("john.doe@example.fr");
         userService.delete(user.get().getId());
     }
-;
 }
