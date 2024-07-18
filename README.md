@@ -1,123 +1,153 @@
 # Testez une application fullstack
 
-L'objectif de ce projet est de découvrir différents tests qu'un développeur devrait mettre en place dans le cadre d'un projet d'application full stack. 
+L'objectif de ce projet est de découvrir différents tests qu'un développeur devrait mettre en place dans le cadre d'un projet d'application full stack.
 
-Les tests en question devraient respecter la structure de la pyramide des tests, à savoir une majorité de tests unitaires permettant 
+Les tests en question devraient respecter la structure de la pyramide des tests, à savoir une majorité de tests unitaires permettant
 de s'assurer du bon fonctionnement au niveau des fonctions en utilisant notamment les mocks sur la partie back-end et front-end.
 
 Les tests suivants sont les tests d'intégrations permettant de valider que les différents services et composants s'intégrent correctement ensemble.
 
 Enfin des tests end to end permettant de tester et valider une fonctionnalité dans sa totalité.
 
-
 ## Installation
 
 ### Récupération des sources
+
 1. Allez sur le dépot github suivant pour récupérer le code source de l'application: [le dépôt GitHub du projet](https://github.com/OpenClassrooms-Student-Center/Testez-une-application-full-stack).
 
 ### Base de données
 
 1. Lancez un terminal et lancez votre application MySQL
 
-2. Créer la base de donnée qui sera utilisé par l'application
+2. Créer la base de donnée qui sera utilisé par l'application avec la commande
+
+    ```mysql
+    CREATE DATABASE <nom de la database>;
+    USE <nom de la database>;
+    ```
 
 3. Exécutez le script SQL qui se trouve dans le répertoire suivant : ressources/sql/script.sql.
 
-### Backend
+### Back-end
+
 1. Lancez un terminal et placez vous dans le répertoire backend.
 
-2. Exécutez la commande suivante pour installer les dépendances :
+2. Adapter les valeurs des variables du fichier application.properties dans le dossier src/main/resources
+
+    ```text
+    spring.datasource.url= <url de la database mysql>
+    spring.datasource.username=${MYSQLDB_USER}
+    spring.datasource.password=${MYSQLDB_PASSWORD}
+
+    oc.app.jwtSecret=<secret key pour la generation de token>
+    oc.app.jwtExpirationMs=86400000
     ```
+
+3. Exécutez la commande suivante pour installer les dépendances :
+
+    ```bash
     mvn install
     ```
 
-3. Démarrez le serveur backend avec la commande :
-    ```
+4. Démarrez le serveur backend avec la commande :
+
+    ```bash
     mvn spring-boot:run
     ```
 
 ### Front-end
+
 1. Lancez un terminal et placez vous dans le répertoire frontend.
 
 2. Exécutez la commande suivante pour installer les dépendances :
-    ```
+
+    ```bash
     npm install
     ```
 
 3. Démarrez le serveur de développement en exécutant :
-    ```
+
+    ```bash
     npm run start
     ```
 
 Le frontend sera accessible à l'adresse [localhost:4200](http://localhost:4200/).
 
-
-
 ## Tests
 
-### Frontend
+### Tests front-end
 
 1. Lancez un terminal et placez vous dans le répertoire frontend.
-   
+
 2. Exécutez la commande suivante pour lancer les tests unitaires :
-    ```
+
+    ```bash
     ng test
     ```
+
 3. Pour générer le rapport de couverture de code, exécutez la commande suivante :
-    ```
+
+    ```bash
     ng test --coverage
     ```
 
 Le rapport de couverture sera présent aussi dans le fichier index.html qui se trouve dans le répertoire coverage/jest/lcov-report du frontend.
 
-### End to end
+### Tests End to end
+
 1. Lancez un terminal et placez vous dans le répertoire frontend.
-   
+
 2. Exécutez la commande suivante pour lancer les tests end-to-end :
-    ```
+
+    ```bash
     npm run cypress:run
     ```
 
 3. Pour générer le rapport de couverture des tests end-to-end, exécutez dans un premier temps la commande suivante :
-    ```
+
+    ```bash
     npm run cypress:run
     ```
 
 Puis, exécutez la commande suivante :
-    ```
+    ```bash
     npm run e2e:coverage
     ```
 
 Le rapport de couverture sera présent aussi dans le fichier index.html qui se trouve dans le répertoire coverage/lcov-report du frontend.
 
-### Backend
+### Tests Back-end
 
 1. Lancez un terminal et rendez-vous dans le répertoire du backend.
 
 2. Exécutez la commande suivante pour lancer les tests unitaires :
-    ```
+
+    ```bash
     mvn test
     ```
-   
+
 3. Pour générer le rapport de couverture de code, exécutez la commande suivante :
-    ```
+
+    ```bash
     mvn test jacoco:report
     ```
 
 Le rapport de couverture de code sera présent aussi dans le fichier index.html qui se trouve dans le répertoire target/site/jacoco du backend.
 
-
 ## Technologies utilisées
 
-* Java
-* Spring Boot
-* jUnit
-* Mockito
-* AssertJ
+* Java 11
+* Spring Boot 2.6.1
+* jUnit 5.8.1
+* Mockito 4.0.0
+* AssertJ 3.21.0
+  
 ---
-* Angular
-* Jest
-* Cypress
+
+* Nodejs 15
+* Angular 14.2.0
+* Jest 281.1.3
+* Cypress 10.4.0
 
 ---
 
